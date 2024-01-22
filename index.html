@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="uploadBtn">upload</button>
+
+
+    <script>
+
+        const $btn = document.querySelector('#uploadBtn');
+        $btn.addEventListener('click', () => {
+           
+            let data = "Hello, World!";
+            let blob = new Blob([data],{type:'text/plain'});
+            const formData = new FormData();
+         
+            // Maybe some compression program has processed the buffer instead of the blob.
+            blob.arrayBuffer().then(buffer => {
+                console.log(buffer);
+                formData.append('file', buffer);
+                fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(res => res.json())
+                .then(res => console.log(res))
+                .catch(err => console.log(err))
+                });
+        
+        })
+
+    </script>
+
+    
+</body>
+</html>
